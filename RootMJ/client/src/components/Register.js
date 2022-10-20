@@ -6,23 +6,21 @@ import { register } from "../modules/authManager";
 export default function Register() {
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [displayName, setDisplayName] = useState();
+  const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [imageLocation, setImageLocation] = useState();
+  const [neighborhoodId, setNeighborhoodId] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
   const registerClick = (e) => {
     e.preventDefault();
     if (password && password !== confirmPassword) {
-      alert("Passwords don't match. Do better.");
+      alert("Passwords don't match. Please try again.");
     } else {
       const userProfile = {
-        firstName,
-        lastName,
-        displayName,
+        name,
+        neighborhoodId,
         imageLocation,
         email,
       };
@@ -34,27 +32,11 @@ export default function Register() {
     <Form onSubmit={registerClick}>
       <fieldset>
         <FormGroup>
-          <Label htmlFor="firstName">First Name</Label>
+          <Label htmlFor="name">Name</Label>
           <Input
             id="firstName"
             type="text"
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="lastName">Last Name</Label>
-          <Input
-            id="lastName"
-            type="text"
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="displayName">Display Name</Label>
-          <Input
-            id="displayName"
-            type="text"
-            onChange={(e) => setDisplayName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
         </FormGroup>
         <FormGroup>
@@ -71,6 +53,14 @@ export default function Register() {
             id="imageLocation"
             type="text"
             onChange={(e) => setImageLocation(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="neighborhoodId">Neighborhood Id</Label>
+          <Input
+            id="neighborhoodId"
+            type="text"
+            onChange={(e) => setNeighborhoodId(e.target.value)}
           />
         </FormGroup>
         <FormGroup>
