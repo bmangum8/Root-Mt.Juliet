@@ -5,7 +5,7 @@ import { addTree } from "../../modules/treeManager";
 
 export default function TreeAddForm() {
     const navigate = useNavigate();
-    const [tree, updateTree] = useState({
+    const [tree, setTree] = useState({
         name: "",
         species: "",
         description: "",
@@ -32,7 +32,7 @@ export default function TreeAddForm() {
                         onChange={(e) => {
                                 let copy = { ...tree }
                                 copy.name = e.target.value
-                                updateTree(copy)
+                                setTree(copy)
                                 }
                         } />
                 </FormGroup>
@@ -45,7 +45,7 @@ export default function TreeAddForm() {
                         onChange={(e) => {
                                 let copy = { ...tree }
                                 copy.species = e.target.value
-                                updateTree(copy)
+                                setTree(copy)
                                 }
                         } />
                 </FormGroup>
@@ -58,7 +58,7 @@ export default function TreeAddForm() {
                         onChange={(e) => {
                                 let copy = { ...tree }
                                 copy.imageLocation = e.target.value
-                                updateTree(copy)
+                                setTree(copy)
                                 }
                         } />
                 </FormGroup>
@@ -71,7 +71,7 @@ export default function TreeAddForm() {
                         onChange={(e) => {
                                 let copy = { ...tree }
                                 copy.description = e.target.value
-                                updateTree(copy)
+                                setTree(copy)
                                 }
                         } />
                 </FormGroup>

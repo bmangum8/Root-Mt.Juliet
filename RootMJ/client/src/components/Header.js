@@ -12,7 +12,8 @@ import {
 import { logout } from "../modules/authManager";
 import { TreeList } from "./Tree/TreeList";
 
-export default function Header({ isLoggedIn }) {
+export default function Header({ isLoggedIn, isAdmin }) {
+
     const [isOpen, setIsOpen ] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
@@ -29,12 +30,6 @@ export default function Header({ isLoggedIn }) {
                     <Nav className="mr-auto" navbar>
                         {isLoggedIn && (
                             <>
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/userProfiles">
-                                        User Profiles
-                                    </NavLink>
-                                </NavItem>
-
                                 <NavItem>
                                     <NavLink tag={RRNavLink} to="/userProfile/details/:firebaseUserId">
                                         My Profile
@@ -59,6 +54,28 @@ export default function Header({ isLoggedIn }) {
                                     </NavItem>
                             </>
                         )}
+
+
+
+
+                        {isLoggedIn && isAdmin && (
+                            <>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/userProfiles">
+                                        User Profiles
+                                    </NavLink>
+                                </NavItem>
+
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/request">
+                                        Requests
+                                    </NavLink>
+                                </NavItem>
+                            </>
+                        )}
+
+
+
 
                         {!isLoggedIn && (
                             <>

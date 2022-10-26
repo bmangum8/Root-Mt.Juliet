@@ -15,7 +15,7 @@ export const TreeList = () => {
     }, []
     );
 
-    const addTreeButton =(e) => {
+    const addTreeButton = (e) => {
         e.preventDefault()
         return navigate("/tree/add")
     }

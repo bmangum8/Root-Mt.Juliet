@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RootMJ.Models
 {
@@ -9,6 +10,10 @@ namespace RootMJ.Models
         public int UserProfileId { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateCompleted { get; set; }
-
+        public Neighborhood Neighborhood { get; set; }
+        
+        //public List<Tree> Trees { get; set; }
+        public UserProfile UserProfile { get; set; }
+        public Tree Tree { get; set; }
     }
 }

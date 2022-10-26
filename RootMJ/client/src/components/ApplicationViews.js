@@ -8,13 +8,17 @@ import { UserProfileList } from "./UserProfile/UserProfileList";
 import { TreeList } from "./Tree/TreeList";
 import TreeAddForm from "./Tree/TreeAddForm";
 import { UserProfileDetails } from "./UserProfile/UserProfileDetails";
+import {RequestList} from "./Request/RequestList";
+import RequestAddForm from "./Request/RequestAddForm";
 
-export default function ApplicationViews({ isLoggedIn }) {
+export default function ApplicationViews({ isLoggedIn, isAdmin }) {
 
   return (
       <Routes>
         <Route path="/">
-      
+
+          <Route path="request/add" element={<RequestAddForm />} />
+          <Route path="request" element={<RequestList />} />
           <Route path="tree" element={<TreeList />} />
           <Route path="userProfile/details/:firebaseUserId" element={<UserProfileDetails />} />
           <Route path="edit/:profileId" element={<UserProfileEditForm />} />

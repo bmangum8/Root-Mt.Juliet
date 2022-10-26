@@ -45,7 +45,7 @@ namespace RootMJ
                         ValidateLifetime = true
                     };
                 });
-
+            services.AddTransient<IRequestRepository, RequestRepository>();
             services.AddTransient<ITreeRepository, TreeRepository>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddControllers();

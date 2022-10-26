@@ -12,6 +12,7 @@ const _doesUserExist = (firebaseUserId) => {
       }
     }).then(resp => resp.ok));
 };
+
 export const isUserAdmin = () => {
  return getToken().then((token) => 
   fetch(`${_apiUrl}/IsUserAdmin`, {
