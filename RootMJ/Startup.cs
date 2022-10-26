@@ -46,6 +46,7 @@ namespace RootMJ
                     };
                 });
 
+            services.AddTransient<ITreeRepository, TreeRepository>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>

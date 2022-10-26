@@ -2,30 +2,30 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
-//import Hello from "./Hello";
-//import { UserProfileList } from "./UserProfileList";
-//import { UserProfileDetails } from "./UserProfileDetails";
+import { TreeEditForm } from "./Tree/TreeEditForm";
+import { UserProfileEditForm } from "./UserProfile/UserProfileEditForm";
+import { UserProfileList } from "./UserProfile/UserProfileList";
+import { TreeList } from "./Tree/TreeList";
+import TreeAddForm from "./Tree/TreeAddForm";
+import { UserProfileDetails } from "./UserProfile/UserProfileDetails";
 
-export default function ApplicationViews({ isLoggedIn, isAdmin }) {
+export default function ApplicationViews({ isLoggedIn }) {
 
   return (
-    <main>
       <Routes>
         <Route path="/">
-          {/* <Route
-            index
-            element={isLoggedIn ? <Hello /> : <Navigate to="/login" />}
-          /> */}
-
-          {/* <Route
-            index
-            path="users" element={isLoggedIn ? <UserProfileList /> : <Navigate to="/login" />} /> 
-          <Route path="users/:firebaseUserId" element={isLoggedIn ? <UserProfileDetails /> : <Navigate to="/login" />} /> */}
+      
+          <Route path="tree" element={<TreeList />} />
+          <Route path="userProfile/details/:firebaseUserId" element={<UserProfileDetails />} />
+          <Route path="edit/:profileId" element={<UserProfileEditForm />} />
+          <Route path="tree/edit/:treeId" element={<TreeEditForm />} />
+          <Route path="tree/add" element={<TreeAddForm />} />
+          <Route path="userProfiles" element={<UserProfileList />} />
+          {/*<Route path="userProfile/edit/:userProfileId" element={<UserProfileEditForm />} />*/}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
-    </main>
   );
 };

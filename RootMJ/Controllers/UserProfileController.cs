@@ -4,10 +4,11 @@ using System;
 using RootMJ.Models;
 using RootMJ.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace RootMJ.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfileController : ControllerBase
@@ -25,6 +26,7 @@ namespace RootMJ.Controllers
             return Ok(_userProfileRepository.GetAllUsers());
         }
 
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -36,7 +38,7 @@ namespace RootMJ.Controllers
             return Ok(userProfile);
         }
 
-        [HttpGet("{firebaseUserId}")]
+        [HttpGet("GetByFirebaseId/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
         {
             var userProfile = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
@@ -47,18 +49,18 @@ namespace RootMJ.Controllers
             return Ok(userProfile);
         }
 
+    
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, UserProfile userProfile)
         {
-            if (id != userProfile.Id)
-            {
-                return BadRequest();
-            }
 
-            _userProfileRepository.Update(userProfile);
+            var currentUserProfile = GetCurrentUserProfile();
+            _userProfileRepository.Update(currentUserProfile);
             return NoContent();
         }
+
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
@@ -86,5 +88,14 @@ namespace RootMJ.Controllers
             return CreatedAtAction(
                 nameof(GetByFirebaseUserId), new { firebaseUserId = userProfile.FirebaseUserId }, userProfile);
         }
+
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+
+        }
+
     }
 }

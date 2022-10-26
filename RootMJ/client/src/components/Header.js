@@ -10,6 +10,7 @@ import {
   NavLink,
 } from "reactstrap";
 import { logout } from "../modules/authManager";
+import { TreeList } from "./Tree/TreeList";
 
 export default function Header({ isLoggedIn }) {
     const [isOpen, setIsOpen ] = useState(false);
@@ -29,8 +30,20 @@ export default function Header({ isLoggedIn }) {
                         {isLoggedIn && (
                             <>
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/users">
+                                    <NavLink tag={RRNavLink} to="/userProfiles">
                                         User Profiles
+                                    </NavLink>
+                                </NavItem>
+
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/userProfile/details/:firebaseUserId">
+                                        My Profile
+                                    </NavLink>
+                                </NavItem>
+                
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/tree">
+                                        Trees
                                     </NavLink>
                                 </NavItem>
 
@@ -65,6 +78,6 @@ export default function Header({ isLoggedIn }) {
                     </Nav>
                 </Collapse>
             </Navbar>
-        </div>
+        </div>                    
     )
 }

@@ -34,7 +34,7 @@ export default function Register() {
         <FormGroup>
           <Label htmlFor="name">Name</Label>
           <Input
-            id="firstName"
+            id="name"
             type="text"
             onChange={(e) => setName(e.target.value)}
           />

@@ -22,31 +22,41 @@ namespace RootMJ.Repositories
                 {
                     cmd.CommandText = @"
                             SELECT up.Id AS UserProfileId, up.Name AS UserProfileName, up. Email,
-                                up.ImageLocation, up.NeighborhoodId AS UserProfileNeighborhoodId, 
+                                up.ImageLocation, up.FirebaseUserId, up.NeighborhoodId AS UserProfileNeighborhoodId, 
                                 n.Id AS NeighborhoodId, n.Name AS NeighborhoodName
                             FROM UserProfile up
                             LEFT JOIN Neighborhood n ON up.NeighborhoodId = n.Id
                             ";
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        var profiles = new List<UserProfile>();
+
+                        List<UserProfile> profiles = new List<UserProfile>();
+
                         while (reader.Read())
                         {
-                            profiles.Add(new UserProfile()
+                            UserProfile profile = new UserProfile()
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                                 Name = reader.GetString(reader.GetOrdinal("UserProfileName")),
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation")),
                                 NeighborhoodId = reader.GetInt32(reader.GetOrdinal("UserProfileNeighborhoodId")),
+                                FirebaseUserId = reader.GetString(reader.GetOrdinal("FirebaseUserId")),
                                 Neighborhood = new Neighborhood()
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
                                     Name = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
                                 }
-                            });
+                            };
+                                if (!reader.IsDBNull(reader.GetOrdinal("ImageLocation")))
+                                {
+                                    profile.ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation"));
+
+                                }
+
+                            profiles.Add(profile);
                         }
+
                         return profiles;
                     }
                 }
@@ -80,14 +90,19 @@ namespace RootMJ.Repositories
                                 Id = id,
                                 Name = reader.GetString(reader.GetOrdinal("UserProfileName")),
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation")),
                                 NeighborhoodId = reader.GetInt32(reader.GetOrdinal("UserProfileNeighborhoodId")),
-                                Neighborhood = new Neighborhood()
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
-                                    Name = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
-                                }
+                                //Neighborhood = new Neighborhood()
+                                //{
+                                    //Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                                    //Name = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
+                                //}
                             };
+
+                            if (!reader.IsDBNull(reader.GetOrdinal("ImageLocation")))
+                            {
+                                profile.ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation"));
+                            }
+
                             return profile;
                         }
                         else
@@ -108,14 +123,15 @@ namespace RootMJ.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                INSERT INTO UserProfile (Name, Email, ImageLocation, NeighborhoodId)
+                                INSERT INTO UserProfile (FirebaseUserId, Name, Email, ImageLocation, NeighborhoodId)
                                 OUTPUT INSERTED.ID
-                                VALUES (@name, @email, @imageLocation, @neighborhoodId)
+                                VALUES (@firebaseUserId, @name, @email, @imageLocation, @neighborhoodId)
                                 ";
+                    cmd.Parameters.AddWithValue("@firebaseUserId", userProfile.FirebaseUserId);
                     cmd.Parameters.AddWithValue("@name", userProfile.Name);
                     cmd.Parameters.AddWithValue("@email", userProfile.Email);
-                    cmd.Parameters.AddWithValue("imageLocation", userProfile.ImageLocation == null ? DBNull.Value : userProfile.ImageLocation);
-                    cmd.Parameters.AddWithValue("neighborhoodId", userProfile.NeighborhoodId);
+                    cmd.Parameters.AddWithValue("@imageLocation", userProfile.ImageLocation == null ? DBNull.Value : userProfile.ImageLocation);
+                    cmd.Parameters.AddWithValue("@neighborhoodId", userProfile.NeighborhoodId);
 
                     int newlyCreatedId = (int)cmd.ExecuteScalar();
                     userProfile.Id = newlyCreatedId;
@@ -135,14 +151,17 @@ namespace RootMJ.Repositories
                             UPDATE UserProfile
                             SET Name = @name,
                                 Email = @email,
-                                ImageLocation = @imageLocation,
-                                NeighborhoodId = @neighborhoodId
+                                ImageLocation = @imageLocation
                             WHERE Id = @id
                             ";
-                    cmd.Parameters.AddWithValue("@name", userProfile.Name);
-                    cmd.Parameters.AddWithValue("@email", userProfile.Email);
-                    cmd.Parameters.AddWithValue("imageLocation", userProfile.ImageLocation == null ? DBNull.Value : userProfile.ImageLocation);
-                    cmd.Parameters.AddWithValue("neighborhoodId", userProfile.NeighborhoodId);
+
+                    cmd.Parameters.AddWithValue("@id", userProfile.Id);
+                    cmd.Parameters.AddWithValue("@name", userProfile.Name == null ? DBNull.Value : userProfile.Name);
+                    cmd.Parameters.AddWithValue("@email", userProfile.Email == null ? DBNull.Value : userProfile.Email);
+                    cmd.Parameters.AddWithValue("@imageLocation", userProfile.ImageLocation == null ? DBNull.Value : userProfile.ImageLocation);
+                    //cmd.Parameters.AddWithValue("@neighborhoodId", userProfile.NeighborhoodId == null ? DBNull.Value : userProfile.NeighborhoodId);
+                    //cmd.Parameters.AddWithValue("@firebaseUserId", userProfile.FirebaseUserId == null ? DBNull.Value : userProfile.FirebaseUserId);
+                    //cmd.Parameters.AddWithValue("@isAdmin", userProfile.IsAdmin == null ? DBNull.Value : userProfile.IsAdmin);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -177,8 +196,11 @@ namespace RootMJ.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                      SELECT Id, FirebaseUserId, Name, Email, ImageLocation, NeighborhoodId
-                                      FROM UserProfile
+                                       SELECT up.Id AS UserProfileId, up.Name AS UserProfileName, up. Email,
+                                        up.ImageLocation, up.FirebaseUserId, up.NeighborhoodId AS UserProfileNeighborhoodId, 
+                                        n.Id AS NeighborhoodId, n.Name AS NeighborhoodName
+                                        FROM UserProfile up
+                                        LEFT JOIN Neighborhood n ON up.NeighborhoodId = n.Id
                                       WHERE FirebaseUserId = @FirebaseUserId
                                        ";
 
@@ -191,11 +213,10 @@ namespace RootMJ.Repositories
                         {
                         profile = new UserProfile()
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                             FirebaseUserId = reader.GetString(reader.GetOrdinal("FirebaseUserId")),
                             Name = reader.GetString(reader.GetOrdinal("UserProfileName")),
                             Email = reader.GetString(reader.GetOrdinal("Email")),
-                            ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("UserProfileNeighborhoodId")),
                             Neighborhood = new Neighborhood()
                             {
@@ -203,6 +224,10 @@ namespace RootMJ.Repositories
                                 Name = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
                             }
                         };
+                        if (!reader.IsDBNull(reader.GetOrdinal("ImageLocation")))
+                        {
+                            profile.ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation"));
+                        }
                     }
                     reader.Close();
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllUserProfiles } from "../modules/userProfileManager";
+import { getAllUserProfiles } from "../../modules/userProfileManager";
 import { UserProfile } from "./UserProfile";
 
 export const UserProfileList = () => {

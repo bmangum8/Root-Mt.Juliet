@@ -1,10 +1,9 @@
-import firebase from "firebase/app";
 import { getToken } from "./authManager";
 import "firebase/auth";
 
-const apiUrl = '/api/userprofile';
+const apiUrl = '/api/tree';
 
-export const getAllUserProfiles = () => {
+export const getAllTrees = () => {
   return getToken().then((token) => {
     return fetch(apiUrl, {
       method: "GET",
@@ -17,14 +16,14 @@ export const getAllUserProfiles = () => {
             return resp.json();
         } else {
             throw new Error(
-                "An unknown error occured while trying to get all user profiles.",
+                "An unknown error occured while trying to get all trees.",
             );
         }
     });
   })
 };
 
-export const addUserProfile = (userProfile) => {
+export const addTree = (tree) => {
     return getToken().then((token) => {
         return fetch(apiUrl, {
         method: "POST",
@@ -32,7 +31,7 @@ export const addUserProfile = (userProfile) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(userProfile),
+        body: JSON.stringify(tree),
     }).then((resp) => {
         if (resp.ok) {
           return resp.json();
@@ -40,42 +39,50 @@ export const addUserProfile = (userProfile) => {
           throw new Error("Unauthorized");
         } else {
           throw new Error(
-            "An unknown error occurred while trying to add a new user profile.",
+            "An unknown error occurred while trying to add a new tree.",
           );
         }
     });
   });
 };
 
-export const updateUserProfile = (userProfile) => {
+export const updateTree = (tree) => {
     return getToken().then((token) => {
-        return fetch(apiUrl + `/${userProfile.id}`, {
+        return fetch(apiUrl + `/${tree.id}`, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(userProfile),
+            body: JSON.stringify(tree),
+        })
+    });
+};
+
+export const deleteTree = (tree) => {
+    return getToken().then((token) => {
+        return fetch(apiUrl + `/${tree.id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(tree),
         }).then((resp) => {
             if (resp.ok) {
-                return resp.json();
+                return 
             } else if (resp.status === 401) {
                 throw new Error("Unauthorized");
             } else {
                 throw new Error(
-                    "An unknown error occurred while trying to update the user profile."
+                    "An unknown error occurred while trying to delete the tree."
                 );
             }
         });
     });
 };
 
-export const getUserProfileByFirebaseId = (firebaseUserId) => {
-    return fetch(apiUrl + `/GetByFirebaseId/${firebaseUserId}`) 
-    .then((resp) =>  resp.json())
-};
-
-export const getProfileById = (profileId) => {
-  return fetch(apiUrl + `/${profileId}`)
-  .then((resp) => resp.json())
+export const getTreeById = (treeId) => {
+        return fetch(apiUrl + `/${treeId}`)
+        .then((resp) => resp.json())
 };
