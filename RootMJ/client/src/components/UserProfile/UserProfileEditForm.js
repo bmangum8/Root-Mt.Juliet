@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Form, FormGroup, Button, Label, Input } from "reactstrap"
-import { updateUserProfile, getUserProfileByFirebaseId, getProfileById } from "../../modules/userProfileManager"
+import { updateUserProfile, getProfileById } from "../../modules/userProfileManager"
 
 export const UserProfileEditForm = () => {
     const { profileId } = useParams()
     const navigate = useNavigate();
-
-    const [currentUserProfile, setCurrentUserProfile] = useState({})
 
     const [editedProfile, setEditedProfile] = useState({
         id: profileId
@@ -16,10 +14,7 @@ export const UserProfileEditForm = () => {
     const getCurrentProfile = () => {
         getProfileById(profileId)
         .then((profile) => {
-            setCurrentUserProfile(profile)
-        })
-        .then((currentUserProfile) => {
-            setEditedProfile(currentUserProfile)
+            setEditedProfile(profile)
         })
     }
     
@@ -27,21 +22,14 @@ export const UserProfileEditForm = () => {
         getCurrentProfile()
     }, [])
 
-
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
         updateUserProfile(editedProfile)
         .then(() => {
-            navigate("/userProfile/details/{id}")
+            navigate("/userProfile/details")
         })
     }
 
-//if statement that checks for null and returns null
-// if (currentUserProfile === null) {
-//     return null
-// } else {
-
-    
     return (
         <>
             <Form>
@@ -50,7 +38,7 @@ export const UserProfileEditForm = () => {
                     <Input 
                         id="profile.name"
                         type="name"
-                        placeholder={currentUserProfile.name}
+                        value={editedProfile.name}
                         onChange={(e) => {
                             let copy = { ...editedProfile }
                             copy.name = e.target.value
@@ -63,7 +51,7 @@ export const UserProfileEditForm = () => {
                     <Input 
                         id="profile.email"
                         type="text"
-                        placeholder={currentUserProfile.email}
+                        value={editedProfile.email}
                         onChange={(e) => {
                             let copy = { ...editedProfile }
                             copy.email = e.target.value
@@ -76,7 +64,7 @@ export const UserProfileEditForm = () => {
                     <Input 
                         id="profile.imageLocation"
                         type="text"
-                        placeholder={currentUserProfile.imageLocation}
+                        value={editedProfile.imageLocation}
                         onChange={(e) => {
                             let copy = { ...editedProfile }
                             copy.imageLocation = e.target.value

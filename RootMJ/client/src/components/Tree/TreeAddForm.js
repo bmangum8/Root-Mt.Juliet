@@ -16,7 +16,7 @@ export default function TreeAddForm() {
         event.preventDefault();
         addTree(tree)
         .then(() => {
-            navigate("/tree")
+            navigate("/trees")
         })
     };
 

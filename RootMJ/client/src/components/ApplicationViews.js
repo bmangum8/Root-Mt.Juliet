@@ -10,22 +10,28 @@ import TreeAddForm from "./Tree/TreeAddForm";
 import { UserProfileDetails } from "./UserProfile/UserProfileDetails";
 import {RequestList} from "./Request/RequestList";
 import RequestAddForm from "./Request/RequestAddForm";
+import { RequestEditForm } from "./Request/RequestEditForm";
 
 export default function ApplicationViews({ isLoggedIn, isAdmin }) {
 
   return (
       <Routes>
         <Route path="/">
-
-          <Route path="request/add" element={<RequestAddForm />} />
-          <Route path="request" element={<RequestList />} />
-          <Route path="tree" element={<TreeList />} />
-          <Route path="userProfile/details/:firebaseUserId" element={<UserProfileDetails />} />
-          <Route path="edit/:profileId" element={<UserProfileEditForm />} />
-          <Route path="tree/edit/:treeId" element={<TreeEditForm />} />
-          <Route path="tree/add" element={<TreeAddForm />} />
-          <Route path="userProfiles" element={<UserProfileList />} />
-          {/*<Route path="userProfile/edit/:userProfileId" element={<UserProfileEditForm />} />*/}
+          <Route path="request/add" element={isLoggedIn ? <RequestAddForm /> : <Navigate to="/login" />} />
+          <Route path="requests" element={isLoggedIn ? <RequestList isAdmin={isAdmin} /> : <Navigate to="/login" />} />
+          <Route path="request/edit/:requestId" element={isLoggedIn ? <RequestEditForm isAdmin={isAdmin} /> : <Navigate to="/login" /> } />
+          
+          <Route path="userProfile/details" element={isLoggedIn ? <UserProfileDetails /> : <Navigate to="/login" />} />
+          <Route path="edit/:profileId" element={isLoggedIn ? <UserProfileEditForm /> : <Navigate to="/login" />} />
+          
+          <Route path="trees" element={<TreeList isAdmin={isAdmin}/>} />
+          
+          
+          <Route path="userProfiles" element={isLoggedIn && isAdmin ? <UserProfileList isAdmin={isAdmin} /> : <Navigate to="/login" />} />
+          
+          <Route path="tree/edit/:treeId" element={isLoggedIn && isAdmin ? <TreeEditForm /> : <Navigate to="/login" />} />
+          <Route path="tree/add" element={isLoggedIn && isAdmin ? <TreeAddForm /> : <Navigate to="/login" />} />
+          
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />

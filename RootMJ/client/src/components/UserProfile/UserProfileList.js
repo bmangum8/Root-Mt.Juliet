@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllUserProfiles } from "../../modules/userProfileManager";
 import { UserProfile } from "./UserProfile";
+import { getCurrentUser } from "../../modules/authManager";
 
 export const UserProfileList = () => {
     const [users, setUsers] = useState([]);
@@ -11,10 +12,11 @@ export const UserProfileList = () => {
     }, []
     );
 
+
     return (
         <section>
             {users.map((userProfile) => (
-                //pass userProfile as a prop to the UserProfile.js component
+                    //pass userProfile as a prop to the UserProfile.js component
                 <UserProfile key={userProfile.id} userProfile={userProfile} />
             ))}
         </section>

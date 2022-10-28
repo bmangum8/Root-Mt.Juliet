@@ -10,7 +10,6 @@ import {
   NavLink,
 } from "reactstrap";
 import { logout } from "../modules/authManager";
-import { TreeList } from "./Tree/TreeList";
 
 export default function Header({ isLoggedIn, isAdmin }) {
 
@@ -31,13 +30,13 @@ export default function Header({ isLoggedIn, isAdmin }) {
                         {isLoggedIn && (
                             <>
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/userProfile/details/:firebaseUserId">
+                                    <NavLink tag={RRNavLink} to="/userProfile/details">
                                         My Profile
                                     </NavLink>
-                                </NavItem>
+                                </NavItem> 
                 
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/tree">
+                                    <NavLink tag={RRNavLink} to="/trees">
                                         Trees
                                     </NavLink>
                                 </NavItem>
@@ -51,6 +50,12 @@ export default function Header({ isLoggedIn, isAdmin }) {
                                     >
                                         Logout
                                     </a>
+                                    </NavItem>
+                 
+                                    <NavItem>
+                                        <NavLink tag={RRNavLink} to="/requests">
+                                            Requests
+                                        </NavLink>
                                     </NavItem>
                             </>
                         )}
@@ -66,11 +71,6 @@ export default function Header({ isLoggedIn, isAdmin }) {
                                     </NavLink>
                                 </NavItem>
 
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/request">
-                                        Requests
-                                    </NavLink>
-                                </NavItem>
                             </>
                         )}
 

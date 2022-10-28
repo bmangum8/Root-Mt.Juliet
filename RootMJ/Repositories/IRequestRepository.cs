@@ -7,5 +7,8 @@ namespace RootMJ.Repositories
     {
         List<Request> GetAllRequests();
         void AddRequest(Request request);
+        void UpdateRequest(Request request);    
+        Request GetRequestById(int id);
+        void DeleteRequest(int id);
     }
 }

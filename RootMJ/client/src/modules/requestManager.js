@@ -45,3 +45,45 @@ export const getAllRequests = () => {
       })
     })
   }
+
+  export const updateRequest = (request) => {
+    return getToken().then((token) => {
+        return fetch(apiUrl + `/${request.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        })
+    });
+};
+
+export const deleteRequest = (request) => {
+  return getToken().then((token) => {
+      return fetch(apiUrl + `/${request.id}`, {
+          method: "DELETE",
+          headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(request),
+      }).then((resp) => {
+          if (resp.ok) {
+              return 
+          } else if (resp.status === 401) {
+              throw new Error("Unauthorized");
+          } else {
+              throw new Error(
+                  "An unknown error occurred while trying to delete the request."
+              );
+          }
+      });
+  });
+};
+
+export const getRequestById = (requestId) => {
+  return fetch(apiUrl + `/${requestId}`)
+  .then((resp) => resp.json())
+};
+

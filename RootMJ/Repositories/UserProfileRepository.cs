@@ -159,9 +159,6 @@ namespace RootMJ.Repositories
                     cmd.Parameters.AddWithValue("@name", userProfile.Name == null ? DBNull.Value : userProfile.Name);
                     cmd.Parameters.AddWithValue("@email", userProfile.Email == null ? DBNull.Value : userProfile.Email);
                     cmd.Parameters.AddWithValue("@imageLocation", userProfile.ImageLocation == null ? DBNull.Value : userProfile.ImageLocation);
-                    //cmd.Parameters.AddWithValue("@neighborhoodId", userProfile.NeighborhoodId == null ? DBNull.Value : userProfile.NeighborhoodId);
-                    //cmd.Parameters.AddWithValue("@firebaseUserId", userProfile.FirebaseUserId == null ? DBNull.Value : userProfile.FirebaseUserId);
-                    //cmd.Parameters.AddWithValue("@isAdmin", userProfile.IsAdmin == null ? DBNull.Value : userProfile.IsAdmin);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -197,7 +194,7 @@ namespace RootMJ.Repositories
                 {
                     cmd.CommandText = @"
                                        SELECT up.Id AS UserProfileId, up.Name AS UserProfileName, up. Email,
-                                        up.ImageLocation, up.FirebaseUserId, up.NeighborhoodId AS UserProfileNeighborhoodId, 
+                                        up.ImageLocation, up.FirebaseUserId, up.NeighborhoodId AS UserProfileNeighborhoodId, up.IsAdmin,
                                         n.Id AS NeighborhoodId, n.Name AS NeighborhoodName
                                         FROM UserProfile up
                                         LEFT JOIN Neighborhood n ON up.NeighborhoodId = n.Id
@@ -218,6 +215,7 @@ namespace RootMJ.Repositories
                             Name = reader.GetString(reader.GetOrdinal("UserProfileName")),
                             Email = reader.GetString(reader.GetOrdinal("Email")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("UserProfileNeighborhoodId")),
+                            IsAdmin = reader.GetBoolean(reader.GetOrdinal("IsAdmin")),
                             Neighborhood = new Neighborhood()
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),

@@ -21,7 +21,8 @@ export const isUserAdmin = () => {
       Authorization: `Bearer ${token}`
     }
   }).then(resp => resp.json())
-  )}
+  )
+};
   
 
 const _saveUser = (userProfile) => {
@@ -77,5 +78,15 @@ export const onLoginStatusChange = (onLoginStatusChangeHandler) => {
   firebase.auth().onAuthStateChanged((user) => {
     onLoginStatusChangeHandler(!!user);
   })
-  
 };
+
+export const getCurrentUser = () => {
+  return getToken().then((token) => 
+   fetch(`${_apiUrl}/GetCurrentUser`, {
+     method: "GET",
+     headers: {
+       Authorization: `Bearer ${token}`
+     }
+   }).then(resp => resp.json())
+   )
+ };

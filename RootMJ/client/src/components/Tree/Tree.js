@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Modal, ModalBody, ModalHeader, ModalFooter, Button } from "reactstrap";
 import { useNavigate, Link } from "react-router-dom";
-import { deleteTree } from "../../modules/treeManager"
+//import { deleteTree } from "../../modules/treeManager"
 
-export const Tree = ({ tree }) => {
-    const navigate = useNavigate();
+export const Tree = ({ tree, isAdmin }) => {
+    //const navigate = useNavigate();
 
-    const [modal, setModal] = useState(false);
-    const toggle = () => setModal(!modal);
-
-
-    const handleDeleteButtonClick = (event) => {
-        event.preventDefault()
-        deleteTree(tree)
-        toggle()
-        navigate(0)
-    }
+    // const [modal, setModal] = useState(false);
+    // const toggle = () => setModal(!modal);
 
 
-    return (
-        <Card className="m-4">
+    // const handleDeleteButtonClick = (event) => {
+    //     event.preventDefault()
+    //     deleteTree(tree)
+    //     toggle()
+    //     navigate(0)
+    // }
+
+    if(isAdmin) {
+        return (
+            <Card className="m-4">
             <CardBody>
                 <p>
                     <img src={tree.imageLocation} alt="image of tree"/>
@@ -30,7 +30,7 @@ export const Tree = ({ tree }) => {
 
                 <Link to={`/tree/edit/${tree.id}`} className="treeEditButton"> Edit </Link>
 
-                <Button onClick={toggle}>
+                {/* <Button onClick={toggle}>
                         DELETE
                 </Button>
 
@@ -52,11 +52,30 @@ export const Tree = ({ tree }) => {
                                 navigate("/tree")
                             })}>
                             Confirm
-                        </Button>
-                    </ModalFooter>
-                </Modal>
+                        </Button> */}
+                    {/* </ModalFooter>
+                </Modal> */}
+
+            </CardBody>
+        </Card>
+        )
+    }
+
+        else {
+            
+            return (
+            <Card className="m-4">
+            <CardBody>
+                <p>
+                    <img src={tree.imageLocation} alt="image of tree"/>
+                </p>
+                <strong>{tree.name}</strong>
+                <p>{tree.species}</p>
+                <p>{tree.description}</p>
 
             </CardBody>
         </Card>
     );
+    
+    }
 }

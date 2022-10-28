@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RootMJ.Repositories;
 using RootMJ.Models;
+using System;
 
 namespace RootMJ.Controllers
 {
@@ -21,11 +22,42 @@ namespace RootMJ.Controllers
             return Ok(_requestRepository.GetAllRequests());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var request = _requestRepository.GetRequestById(id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+            return Ok(request);
+        }
+
         [HttpPost]
         public IActionResult Post(Request request)
         {
+            request.DateCreated = DateTime.Now;
+            //for now--fix later
+           request.DateCompleted = null;
+
             _requestRepository.AddRequest(request);
             return CreatedAtAction("Get", new { id = request.Id }, request);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Request request)
+        {
+
+            _requestRepository.UpdateRequest(request);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _requestRepository.DeleteRequest(id);
+            return NoContent();
+        }
+
     }
 }

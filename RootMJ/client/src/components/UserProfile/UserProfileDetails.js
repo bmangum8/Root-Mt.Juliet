@@ -1,26 +1,17 @@
 import { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom";
-import { getUserProfileByFirebaseId } from "../../modules/userProfileManager";
+import { Link } from "react-router-dom";
 import { Card, CardBody } from "reactstrap"
+import { getCurrentUser } from "../../modules/authManager";
 
 export const UserProfileDetails = () => {
-    const { firebaseUserId } = useParams();
-
-    const [userDetail, setUserDetail] = useState({});
-
-    const getUserDetails = () => {
-        getUserProfileByFirebaseId(firebaseUserId)
-        .then((userProfile) => {
-            setUserDetail(userProfile)
-        })
-    };
-
+    const [currentUser, setCurrentUser] = useState({});
+    
     useEffect(() => {
-        getUserDetails()
-    },
-    []);
-
-
+        getCurrentUser()
+        .then((user) => {
+            setCurrentUser(user)
+        })
+    }, [])
 
     return (
         <Card className="m-4">
@@ -29,12 +20,12 @@ export const UserProfileDetails = () => {
                 <div className="container">
                     <div className="row justify-content-center">
                         <p>
-                            <img src={userDetail.imageLocation} alt="image of person"/>
+                            <img src={currentUser.imageLocation} alt="image of person"/>
                         </p>
-                        <p>Name: {userDetail.name}</p>
-                        <p>Email: {userDetail.email}</p>
+                        <p>Name: {currentUser.name}</p>
+                        <p>Email: {currentUser.email}</p>
                     </div>
-                    <Link to={`/edit/${userDetail.id}`}>
+                    <Link to={`/edit/${currentUser.id}`}>
                         Edit My Profile
                     </Link>
                 </div>

@@ -4,7 +4,7 @@ import { getAllTrees } from "../../modules/treeManager";
 import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 
-export const TreeList = () => {
+export const TreeList = ({ isAdmin }) => {
     const [trees, setTrees] = useState([]);
 
     const navigate = useNavigate();
@@ -20,17 +20,31 @@ export const TreeList = () => {
         return navigate("/tree/add")
     }
 
-    return (
+    if (isAdmin) {
+        return (
         <>
         <Button onClick={(clickEvent) => addTreeButton(clickEvent)}>
             Add Tree
         </Button>
+
         <section>
             {trees.map((tree) => (
                 //pass tree as a prop to the tree.js component
-                <Tree key={tree.id} tree={tree} />
+                <Tree key={tree.id} tree={tree} isAdmin={isAdmin}/>
             ))}
         </section>
         </>
-    )
+        )
+    }
+    else {
+        return (
+            <section>
+                {trees.map((tree) => (
+                    //pass tree as a prop to the tree.js component
+                    <Tree key={tree.id} tree={tree} />
+                ))}
+            </section>
+        )
+
+    }
 }

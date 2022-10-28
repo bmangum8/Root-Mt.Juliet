@@ -38,6 +38,15 @@ namespace RootMJ.Controllers
             return Ok(userProfile);
         }
 
+        
+        [HttpGet("GetCurrentUser")]
+        public IActionResult GetCurrentUser()
+        {
+            var currentProfile = GetCurrentUserProfile();
+            return Ok(currentProfile);
+        }
+        
+
         [HttpGet("GetByFirebaseId/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
         {
@@ -55,8 +64,9 @@ namespace RootMJ.Controllers
         public IActionResult Put(int id, UserProfile userProfile)
         {
 
-            var currentUserProfile = GetCurrentUserProfile();
-            _userProfileRepository.Update(currentUserProfile);
+            //var currentUserProfile = GetCurrentUserProfile();
+            //_userProfileRepository.Update(currentUserProfile);
+            _userProfileRepository.Update(userProfile);
             return NoContent();
         }
 
@@ -84,9 +94,18 @@ namespace RootMJ.Controllers
         [HttpPost]
         public IActionResult Register(UserProfile userProfile)
         {
+            userProfile.IsAdmin = false;
             _userProfileRepository.Add(userProfile);
             return CreatedAtAction(
                 nameof(GetByFirebaseUserId), new { firebaseUserId = userProfile.FirebaseUserId }, userProfile);
+        }
+
+        [HttpGet("IsUserAdmin")]
+        public IActionResult IsUserAdmin()
+        {
+            var userProfile = GetCurrentUserProfile();
+
+            return userProfile.IsAdmin == true ? Ok(true) : Ok(false);
         }
 
 

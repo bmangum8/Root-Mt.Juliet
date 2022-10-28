@@ -6,21 +6,15 @@ import { getTreeById, updateTree } from "../../modules/treeManager"
 export const TreeEditForm = () => {
     const { treeId } = useParams()
     const navigate = useNavigate();
-
-    const [currentTree, setCurrentTree] = useState({})
     
     const [editedTree, setEditedTree] = useState({
         id: treeId,
-        name: "",
-        species: "",
-        description: "",
-        imageLocation: ""
     })
 
     const getCurrentTree = () => {
         getTreeById(treeId)
         .then((tree) => {
-            setCurrentTree(tree)
+            setEditedTree(tree)
         })
     }
 
@@ -32,13 +26,11 @@ export const TreeEditForm = () => {
         event.preventDefault();
         updateTree(editedTree)
         .then(() => {
-            navigate("/tree")
+            navigate("/trees")
         })
     }
 
-
     
-
     return (
         <>
             <Form>
@@ -47,7 +39,7 @@ export const TreeEditForm = () => {
                     <Input 
                         id="tree.name"
                         type="name"
-                        placeholder={currentTree.name}
+                        value={editedTree.name}
                         onChange={(e) => {
                                 let copy = { ...editedTree }
                                 copy.name = e.target.value
@@ -60,12 +52,12 @@ export const TreeEditForm = () => {
                     <Input 
                         id="tree.species"
                         type="text"
-                        placeholder={currentTree.species}
-                        onChange={(e) => {
-                                let copy = { ...editedTree }
-                                copy.species = e.target.value
-                                setEditedTree(copy)
-                                }
+                        value={editedTree.species}
+                            onChange={(e) => {
+                                    let copy = { ...editedTree }
+                                    copy.species = e.target.value
+                                    setEditedTree(copy)
+                                    }
                         } />
                 </FormGroup>
                 <FormGroup>
@@ -73,7 +65,7 @@ export const TreeEditForm = () => {
                     <Input 
                         id="tree.imageLocation"
                         type="text"
-                        placeholder={currentTree.imageLocation}
+                        value={editedTree.imageLocation}
                         onChange={(e) => {
                                 let copy = { ...editedTree }
                                 copy.imageLocation = e.target.value
@@ -86,7 +78,7 @@ export const TreeEditForm = () => {
                     <Input 
                         id="tree.description"
                         type="text"
-                        placeholder={currentTree.description}
+                        value={editedTree.description}
                         onChange={(e) => {
                                 let copy = { ...editedTree }
                                 copy.description = e.target.value
@@ -108,4 +100,3 @@ export const TreeEditForm = () => {
         </>
     )
 }
-//}

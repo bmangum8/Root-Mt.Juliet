@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RootMJ.Models;
 using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RootMJ.Repositories
 {
@@ -65,6 +66,44 @@ namespace RootMJ.Repositories
         }
 
 
+
+        public Request GetRequestById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            SELECT Id, DateCompleted    
+                            FROM Request
+                            WHERE Id = @id
+                            ";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Request request = null;
+
+                    if (reader.Read())
+                    {
+                        request = new Request()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                        };
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("DateCompleted")))
+                        {
+                            request.DateCompleted = reader.GetDateTime(reader.GetOrdinal("DateCompleted"));
+                        }
+                    }
+
+                    reader.Close();
+                    return request;
+                }
+            }
+        }
+
+
         public void AddRequest(Request request)
         {
             using (var conn = Connection)
@@ -74,7 +113,7 @@ namespace RootMJ.Repositories
                 {
                     cmd.CommandText = @"
                             INSERT INTO Request (TreeId, UserProfileId, DateCreated, DateCompleted)
-                            OUTOUT INSERTED.ID
+                            OUTPUT INSERTED.ID
                             VALUES (@treeId, @userProfileId, @dateCreated, @dateCompleted)
                             ";
                     cmd.Parameters.AddWithValue("@treeId", request.TreeId);
@@ -87,5 +126,47 @@ namespace RootMJ.Repositories
                 }
             }
         }
+
+        public void UpdateRequest(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Request 
+                            SET DateCompleted = @dateCompleted 
+                            WHERE Id = @id
+                            ";
+
+                    cmd.Parameters.AddWithValue("@id", request.Id);
+                    cmd.Parameters.AddWithValue("@dateCompleted", request.DateCompleted);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteRequest(int requestId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Request
+                            WHERE Id = @id
+                            ";
+                    cmd.Parameters.AddWithValue("@id", requestId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+
     }
 }
