@@ -9,7 +9,6 @@ export const TreeList = ({ isAdmin }) => {
 
     const navigate = useNavigate();
 
-    //set state upon rendering
     useEffect(() => {
         getAllTrees().then(setTrees);
     }, []
@@ -20,23 +19,13 @@ export const TreeList = ({ isAdmin }) => {
         return navigate("/tree/add")
     }
 
-    if (isAdmin) {
-        return (
-        <>
-        <Button onClick={(clickEvent) => addTreeButton(clickEvent)}>
-            Add Tree
-        </Button>
 
-        <section>
-            {trees.map((tree) => (
-                //pass tree as a prop to the tree.js component
-                <Tree key={tree.id} tree={tree} isAdmin={isAdmin}/>
-            ))}
-        </section>
-        </>
-        )
-    }
-    else {
+    //     <>
+    //     <Button onClick={(clickEvent) => addTreeButton(clickEvent)}>
+    //         Add Tree
+    //     </Button>
+
+
         return (
             <section>
                 {trees.map((tree) => (
@@ -47,4 +36,4 @@ export const TreeList = ({ isAdmin }) => {
         )
 
     }
-}
+// }

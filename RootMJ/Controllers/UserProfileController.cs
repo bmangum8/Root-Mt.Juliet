@@ -31,7 +31,7 @@ namespace RootMJ.Controllers
         public IActionResult GetProfileById()
         {
             var currentUserProfile = GetCurrentUserProfile();
-           ;
+           
             if (currentUserProfile.IsAdmin == false)
             {
                 return Ok(currentUserProfile);
@@ -43,14 +43,6 @@ namespace RootMJ.Controllers
            
         }
 
-        /*
-        [HttpGet("GetCurrentUser")]
-        public IActionResult GetCurrentUser()
-        {
-            var currentProfile = GetCurrentUserProfile();
-            return Ok(currentProfile);
-        }
-        */
 
         [HttpGet("GetByFirebaseId/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
@@ -75,7 +67,6 @@ namespace RootMJ.Controllers
                 _userProfileRepository.Update(currentUserProfile);
 
             }
-            //_userProfileRepository.Update(userProfile);
             return NoContent();
         }
 

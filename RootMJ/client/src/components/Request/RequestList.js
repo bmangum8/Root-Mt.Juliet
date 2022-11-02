@@ -18,12 +18,6 @@ export const RequestList = () => {
         })
     }, [])
 
-    // useEffect(() => {
-    //     getCurrentUserProfile()
-    //     .then((profile) => {
-    //         setUser(profile)
-    //     })
-    // })
 
     const addRequestButton = (e) => {
         e.preventDefault()
@@ -37,7 +31,7 @@ export const RequestList = () => {
                 Create New Request
             </Button>
 
-            <h2> My Tree Requests </h2>
+            <h2> Tree Requests </h2>
             <section>
             {requests.map((request) => (
                 <Request key={request.id} request={request} />

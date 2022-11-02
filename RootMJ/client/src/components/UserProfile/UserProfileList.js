@@ -5,12 +5,6 @@ import { UserProfile } from "./UserProfile";
 export const UserProfileList = () => {
     const [users, setUsers] = useState([]);
 
-    //set state upon rendering
-    // useEffect(() => {
-    //     getAllUserProfiles().then(setUsers);
-    // }, []
-    // );
-
     useEffect(() => {
         getCurrentUserProfile()
         .then((profileArray) => {

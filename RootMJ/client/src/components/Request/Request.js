@@ -44,7 +44,15 @@ export const Request = ({ request }) => {
                 <Link to={`/request/edit/${request.id}` } className="requestEditButton"> Mark as Complete </Link>
             )
         }
+        else if(user === true) {
+            return (
+            <Button onClick={toggle}>
+                DELETE
+            </Button>
+            )
+        }
     }
+    
     
 
 
@@ -63,11 +71,6 @@ export const Request = ({ request }) => {
             
                 <CardFooter>
                 {isComplete()} 
-                        {' '}
-
-                        <Button onClick={toggle}>
-                            DELETE
-                        </Button>
 
                         <Modal isOpen={modal} toggle={toggle}>
                             <ModalHeader toggle={toggle}>Delete Request</ModalHeader>

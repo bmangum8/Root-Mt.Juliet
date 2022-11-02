@@ -17,18 +17,18 @@ export const Tree = ({ tree, isAdmin }) => {
     //     navigate(0)
     // }
 
-    if(isAdmin) {
-        return (
-            <Card className="m-4">
-            <CardBody>
-                <p>
-                    <img src={tree.imageLocation} alt="image of tree"/>
-                </p>
-                <strong>{tree.name}</strong>
-                <p>{tree.species}</p>
-                <p>{tree.description}</p>
+    // if(isAdmin) {
+    //     return (
+    //         <Card className="m-4">
+    //         <CardBody>
+    //             <p>
+    //                 <img src={tree.imageLocation} alt="image of tree"/>
+    //             </p>
+    //             <strong>{tree.name}</strong>
+    //             <p>{tree.species}</p>
+    //             <p>{tree.description}</p>
 
-                <Link to={`/tree/edit/${tree.id}`} className="treeEditButton"> Edit </Link>
+    //             <Link to={`/tree/edit/${tree.id}`} className="treeEditButton"> Edit </Link>
 
                 {/* <Button onClick={toggle}>
                         DELETE
@@ -56,12 +56,12 @@ export const Tree = ({ tree, isAdmin }) => {
                     {/* </ModalFooter>
                 </Modal> */}
 
-            </CardBody>
-        </Card>
-        )
-    }
+    //         </CardBody>
+    //     </Card>
+    //     )
+    // }
 
-        else {
+    //     else {
             
             return (
             <Card className="m-4">
@@ -77,5 +77,5 @@ export const Tree = ({ tree, isAdmin }) => {
         </Card>
     );
     
-    }
+//     }
 }

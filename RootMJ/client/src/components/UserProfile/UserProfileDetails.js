@@ -25,9 +25,9 @@ export const UserProfileDetails = () => {
                         <p>Name: {currentUser.name}</p>
                         <p>Email: {currentUser.email}</p>
                     </div>
-                    <Link to={`/edit/${currentUser.id}`}>
+                    {/* <Link to={`/edit/${currentUser.id}`}>
                         Edit My Profile
-                    </Link>
+                    </Link> */}
                 </div>
             </CardBody>
         </Card>

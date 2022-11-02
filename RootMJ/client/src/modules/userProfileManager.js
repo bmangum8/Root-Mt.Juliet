@@ -56,16 +56,6 @@ export const updateUserProfile = (userProfile) => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(userProfile),
-        // }).then((resp) => {
-        //     if (resp.ok) {
-        //         return resp.json();
-        //     } else if (resp.status === 401) {
-        //         throw new Error("Unauthorized");
-        //     } else {
-        //         throw new Error(
-        //             "An unknown error occurred while trying to update the user profile."
-        //         );
-        //     }
         });
     });
 };
@@ -75,26 +65,7 @@ export const getUserProfileByFirebaseId = (firebaseUserId) => {
     .then((resp) =>  resp.json())
 };
 
-/*
-export const getProfileById = () => {
-  return getToken().then((token) => {
-    return fetch(apiUrl + `/GetProfileById`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-  })
-  .then((resp) => {
-    if (resp.ok) {
-        return resp.json();
-    } else {
-        throw new Error(
-            "An unknown error occured while trying to get request.",
-        )
-      }
-    });
-  });
-};
-*/
+
 
 export const getCurrentUserProfile = () => {
   return getToken().then((token) => 
