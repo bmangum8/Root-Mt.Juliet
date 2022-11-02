@@ -83,7 +83,33 @@ export const deleteRequest = (request) => {
 };
 
 export const getRequestById = (requestId) => {
-  return fetch(apiUrl + `/${requestId}`)
+  return getToken().then((token) => {
+    return fetch(apiUrl + `/${requestId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
   .then((resp) => resp.json())
-};
+});
+}
+
+
+export const getRequestByUserId = () => {
+  return getToken().then((token) => {
+    return fetch(apiUrl + `/GetRequestByUserId`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((resp) => {
+      if (resp.ok) {
+          return resp.json();
+      } else {
+          throw new Error(
+              "An unknown error occured while trying to get request.",
+          );
+      }
+    });
+});
+}
 

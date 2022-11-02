@@ -40,8 +40,7 @@ export const RequestEditForm = () => {
                     <Input 
                         id="request.dateCompleted"
                         type="date" 
-                        //name="datetime" 
-                        value={editedRequest.dateCompleted}
+                        value={editedRequest.dateCompleted || ""}
                         placeholder="datetime placeholder" 
                         onChange={(e) => {
                             let copy = { ...editedRequest }

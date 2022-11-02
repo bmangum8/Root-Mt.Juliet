@@ -1,37 +1,29 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { getAllRequests } from "../../modules/requestManager";
 import { Request } from "./Request"
 import { Button } from "reactstrap";
-import { getCurrentUser } from "../../modules/authManager";
+import { getRequestByUserId } from "../../modules/requestManager";
+import { getCurrentUserProfile } from "../../modules/userProfileManager"
 
-export const RequestList = ({ isAdmin }) => {
+export const RequestList = () => {
     const [requests, setRequests] = useState([]);
-    const [myRequests, setMyRequests] =useState([]);
-    const [currentUser, setCurrentUser] = useState({});
+    //const [user, setUser] = useState({})
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        getAllRequests()
-        .then(setRequests)
-    }, []
-    );
-
-    useEffect(() => {
-        getCurrentUser()
-        .then((user) => {
-            setCurrentUser(user)
+        getRequestByUserId()
+        .then((requestsArray) => {
+            setRequests(requestsArray)
         })
     }, [])
 
-    useEffect(
-        () => {
-            const filteredRequests = requests.filter(request => request.userProfileId === currentUser.id)
-            setMyRequests(filteredRequests)
-        },
-        [requests]
-    )
+    // useEffect(() => {
+    //     getCurrentUserProfile()
+    //     .then((profile) => {
+    //         setUser(profile)
+    //     })
+    // })
 
     const addRequestButton = (e) => {
         e.preventDefault()
@@ -39,35 +31,20 @@ export const RequestList = ({ isAdmin }) => {
     }
     
 
-    if (isAdmin) {
-        return (
-        <section>
-            {requests.map((request) => (
-                <Request key={request.id} request={request} 
-                isAdmin={isAdmin}/>
-                ))}
-        </section>
-
-        )
-    } 
-
-    else {
         return (
         <>
             <Button onClick={(clickEvent) => addRequestButton(clickEvent)}>
                 Create New Request
             </Button>
-    
-        <h2> My Tree Requests </h2>
-        <section>
-        {myRequests.map((request) => (
-            <Request key={request.id} request={request} />
-            ))}
+
+            <h2> My Tree Requests </h2>
+            <section>
+            {requests.map((request) => (
+                <Request key={request.id} request={request} />
+                ))}
         </section>
-            </>
 
-        )
 
-    }
-
+        </>
+    )
 }

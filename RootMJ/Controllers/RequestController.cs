@@ -3,23 +3,28 @@ using Microsoft.AspNetCore.Mvc;
 using RootMJ.Repositories;
 using RootMJ.Models;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace RootMJ.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : ControllerBase
     {
         private readonly IRequestRepository _requestRepository;
-        public RequestController(IRequestRepository requestRepository)
+        private readonly IUserProfileRepository _userProfileRepository;
+        public RequestController(IRequestRepository requestRepository, IUserProfileRepository userProfileRepository)
         {
             _requestRepository = requestRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_requestRepository.GetAllRequests());
+           return Ok(_requestRepository.GetAllRequests());
         }
 
         [HttpGet("{id}")]
@@ -33,16 +38,30 @@ namespace RootMJ.Controllers
             return Ok(request);
         }
 
+        [HttpGet("GetRequestByUserId")]
+        public IActionResult GetRequestByUserId()
+        {
+            var currentUserProfile = GetCurrentUserProfile();
+            if (currentUserProfile.IsAdmin == false)
+            {
+                return Ok(_requestRepository.GetRequestByUserId(currentUserProfile.Id));
+            }
+            else
+            {
+                return Ok(_requestRepository.GetAllRequests());
+            }
+        }
+
         [HttpPost]
         public IActionResult Post(Request request)
         {
             request.DateCreated = DateTime.Now;
-            //for now--fix later
-           request.DateCompleted = null;
+            request.DateCompleted = null;
 
             _requestRepository.AddRequest(request);
             return CreatedAtAction("Get", new { id = request.Id }, request);
         }
+        
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, Request request)
@@ -59,5 +78,15 @@ namespace RootMJ.Controllers
             return NoContent();
         }
 
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+        }
+    
+        
     }
 }
+
+
+

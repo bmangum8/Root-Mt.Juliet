@@ -135,6 +135,7 @@ namespace RootMJ.Repositories
 
                     int newlyCreatedId = (int)cmd.ExecuteScalar();
                     userProfile.Id = newlyCreatedId;
+                    userProfile.IsAdmin = false;
                 }
             }
         }

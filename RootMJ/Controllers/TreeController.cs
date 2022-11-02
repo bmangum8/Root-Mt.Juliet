@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace RootMJ.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TreeController : ControllerBase

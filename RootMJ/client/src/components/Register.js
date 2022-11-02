@@ -23,6 +23,7 @@ export default function Register() {
         neighborhoodId,
         imageLocation,
         email,
+        isAdmin: false,
       };
       register(userProfile, password).then(() => navigate("/"));
     }

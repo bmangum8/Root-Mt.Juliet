@@ -83,6 +83,6 @@ export const deleteTree = (tree) => {
 };
 
 export const getTreeById = (treeId) => {
-        return fetch(apiUrl + `/${treeId}`)
-        .then((resp) => resp.json())
+  return fetch(apiUrl + `/${treeId}`)
+  .then((resp) => resp.json())
 };

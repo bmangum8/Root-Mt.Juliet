@@ -18,7 +18,7 @@ export default function ApplicationViews({ isLoggedIn, isAdmin }) {
       <Routes>
         <Route path="/">
           <Route path="request/add" element={isLoggedIn ? <RequestAddForm /> : <Navigate to="/login" />} />
-          <Route path="requests" element={isLoggedIn ? <RequestList isAdmin={isAdmin} /> : <Navigate to="/login" />} />
+          <Route path="requests" element={isLoggedIn ? <RequestList /> : <Navigate to="/login" />} />
           <Route path="request/edit/:requestId" element={isLoggedIn ? <RequestEditForm isAdmin={isAdmin} /> : <Navigate to="/login" /> } />
           
           <Route path="userProfile/details" element={isLoggedIn ? <UserProfileDetails /> : <Navigate to="/login" />} />

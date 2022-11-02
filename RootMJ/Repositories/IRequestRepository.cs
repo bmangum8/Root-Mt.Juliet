@@ -10,5 +10,6 @@ namespace RootMJ.Repositories
         void UpdateRequest(Request request);    
         Request GetRequestById(int id);
         void DeleteRequest(int id);
+        List<Request> GetRequestByUserId(int userId);
     }
 }

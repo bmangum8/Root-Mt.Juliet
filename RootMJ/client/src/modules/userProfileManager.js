@@ -75,7 +75,42 @@ export const getUserProfileByFirebaseId = (firebaseUserId) => {
     .then((resp) =>  resp.json())
 };
 
-export const getProfileById = (profileId) => {
-  return fetch(apiUrl + `/${profileId}`)
-  .then((resp) => resp.json())
+/*
+export const getProfileById = () => {
+  return getToken().then((token) => {
+    return fetch(apiUrl + `/GetProfileById`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+  })
+  .then((resp) => {
+    if (resp.ok) {
+        return resp.json();
+    } else {
+        throw new Error(
+            "An unknown error occured while trying to get request.",
+        )
+      }
+    });
+  });
 };
+*/
+
+export const getCurrentUserProfile = () => {
+  return getToken().then((token) => 
+   fetch(apiUrl + `/GetCurrentUserProfile`, {
+     method: "GET",
+     headers: {
+       Authorization: `Bearer ${token}`
+     }
+   })
+   .then((resp) => {
+    if (resp.ok) {
+        return resp.json();
+    } else {
+        throw new Error(
+            "An unknown error occured while trying to get user.",
+        );
+    }
+  }))
+}

@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Form, FormGroup, Button, Label, Input } from "reactstrap"
-import { updateUserProfile, getProfileById } from "../../modules/userProfileManager"
+import { updateUserProfile, getCurrentUserProfile } from "../../modules/userProfileManager"
 
 export const UserProfileEditForm = () => {
     const { profileId } = useParams()
     const navigate = useNavigate();
 
     const [editedProfile, setEditedProfile] = useState({
-        id: profileId
+        id: profileId,
+        name: "",
+        email: "",
+        imageLocation: ""
     })
 
     const getCurrentProfile = () => {
-        getProfileById(profileId)
+        getCurrentUserProfile()
         .then((profile) => {
             setEditedProfile(profile)
         })

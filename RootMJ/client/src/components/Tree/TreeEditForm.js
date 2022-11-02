@@ -9,6 +9,10 @@ export const TreeEditForm = () => {
     
     const [editedTree, setEditedTree] = useState({
         id: treeId,
+        name: "",
+        species: "",
+        description: "",
+        imageLocation: ""
     })
 
     const getCurrentTree = () => {
@@ -93,7 +97,7 @@ export const TreeEditForm = () => {
                 </FormGroup>            
             </Form>
             <Form>
-                <Button onClick={() => { navigate("/tree") }}>
+                <Button onClick={() => { navigate("/trees") }}>
                     Cancel
                 </Button>
             </Form>

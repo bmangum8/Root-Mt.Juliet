@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { Card, CardBody } from "reactstrap"
-import { getCurrentUser } from "../../modules/authManager";
+import { getCurrentUserProfile } from "../../modules/userProfileManager";
 
 export const UserProfileDetails = () => {
     const [currentUser, setCurrentUser] = useState({});
     
     useEffect(() => {
-        getCurrentUser()
+        getCurrentUserProfile()
         .then((user) => {
             setCurrentUser(user)
         })

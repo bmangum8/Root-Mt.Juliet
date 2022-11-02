@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace RootMJ.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfileController : ControllerBase
@@ -27,25 +27,30 @@ namespace RootMJ.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("GetCurrentUserProfile")]
+        public IActionResult GetProfileById()
         {
-            var userProfile = _userProfileRepository.GetById(id);
-            if (userProfile == null)
+            var currentUserProfile = GetCurrentUserProfile();
+           ;
+            if (currentUserProfile.IsAdmin == false)
             {
-                return NotFound();
+                return Ok(currentUserProfile);
             }
-            return Ok(userProfile);
+            else
+            {
+                return Ok(_userProfileRepository.GetAllUsers());
+            }
+           
         }
 
-        
+        /*
         [HttpGet("GetCurrentUser")]
         public IActionResult GetCurrentUser()
         {
             var currentProfile = GetCurrentUserProfile();
             return Ok(currentProfile);
         }
-        
+        */
 
         [HttpGet("GetByFirebaseId/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
@@ -64,9 +69,13 @@ namespace RootMJ.Controllers
         public IActionResult Put(int id, UserProfile userProfile)
         {
 
-            //var currentUserProfile = GetCurrentUserProfile();
-            //_userProfileRepository.Update(currentUserProfile);
-            _userProfileRepository.Update(userProfile);
+            var currentUserProfile = GetCurrentUserProfile();
+            if(currentUserProfile.Id == userProfile.Id)
+            {
+                _userProfileRepository.Update(currentUserProfile);
+
+            }
+            //_userProfileRepository.Update(userProfile);
             return NoContent();
         }
 
@@ -99,6 +108,7 @@ namespace RootMJ.Controllers
             return CreatedAtAction(
                 nameof(GetByFirebaseUserId), new { firebaseUserId = userProfile.FirebaseUserId }, userProfile);
         }
+
 
         [HttpGet("IsUserAdmin")]
         public IActionResult IsUserAdmin()

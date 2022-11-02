@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Card, CardBody, CardFooter, CardHeader, Modal, ModalBody, ModalHeader, ModalFooter, Button } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteRequest } from "../../modules/requestManager";
+import { isUserAdmin } from "../../modules/authManager";
 
-export const Request = ({ request, isAdmin }) => {
-
+export const Request = ({ request }) => {
+    const [user, setUser] = useState({
+        isAdmin: true
+    })
     const navigate = useNavigate();
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
+    useEffect(() => {
+        isUserAdmin()
+        .then((profile) => {
+            setUser(profile)
+        })
+    }, [])
 
     const handleDeleteButtonClick = (event) => {
         event.preventDefault()
@@ -28,64 +37,39 @@ export const Request = ({ request, isAdmin }) => {
         }
     }
 
-   if(isAdmin && request.dateCompleted === null) {
+    const isAdmin = () => {
+        
+        if(request.dateCompleted === null && user === true) {
+            return (
+                <Link to={`/request/edit/${request.id}` } className="requestEditButton"> Mark as Complete </Link>
+            )
+        }
+    }
+    
+
+
     return (
         <>
         <Card className="m-4">
             <CardBody>
+                <CardHeader>
+                    {isAdmin()}
+                </CardHeader>
+
                 <p>User Name: {request.userProfile.name}</p>
                 <p>Tree Requested: <strong>{request.tree.name}</strong></p>
                 <p>Neighborhood: <strong>{request.neighborhood.name}</strong></p>
                 <p>Date Requested: {request.dateCreated}.</p>
             
                 <CardFooter>
-                    <Link to={`/request/edit/${request.id}` } className="requestEditButton"> Mark as Complete </Link>
-                </CardFooter>
-            </CardBody>
-        </Card>
-    </>
-    )
-}
-
-else if(isAdmin) {
-    return (
-        <>
-        <Card className="m-4">
-            <CardHeader>
-                {isComplete()}
-            </CardHeader>
-            <CardBody>
-                <p>User Name: {request.userProfile.name}</p>
-                <p>Tree Requested: <strong>{request.tree.name}</strong></p>
-                <p>Neighborhood: <strong>{request.neighborhood.name}</strong></p>
-                <p>Date Requested: {request.dateCreated}.</p>
-                <p>Date Completed: {request.dateCompleted}</p>
-            </CardBody>
-        </Card>
-    </>
-    )
-}
-
-    else {
-
-        return (
-            <>
-            <Card className="m-4">
-                <CardBody>
-                    <p>User Name: {request.userProfile.name}</p>
-                    <p>Tree Requested: <strong>{request.tree.name}</strong></p>
-                    <p>Neighborhood: <strong>{request.neighborhood.name}</strong></p>
-                    <p>Date Requested: {request.dateCreated}.</p>
-
-                    <CardFooter>
-                        {isComplete()} 
+                {isComplete()} 
                         {' '}
 
                         <Button onClick={toggle}>
                             DELETE
                         </Button>
 
-                        <Modal isOpen={modal} toggle={toggle} {...request}>
+                        <Modal isOpen={modal} toggle={toggle}>
                             <ModalHeader toggle={toggle}>Delete Request</ModalHeader>
                             <ModalBody>
                                 <>
@@ -98,19 +82,15 @@ else if(isAdmin) {
                                 <Button color="secondary" onClick={toggle}>
                                     Cancel
                                 </Button>
-                                <Button color="secondary" onClick={(clickEvent) => handleDeleteButtonClick(clickEvent)
-                                    .then(() => {
-                                        navigate("/requests")
-                                    })}>
+                                <Button color="secondary" onClick={(clickEvent) => handleDeleteButtonClick(clickEvent)}>
                                     Confirm
                                 </Button> 
                             </ModalFooter> 
                         </Modal>
-                    </CardFooter>
-                </CardBody>
-            </Card>
-        </>
-        )
-    }
-} 
+                </CardFooter>
+            </CardBody>
+        </Card>
+    </>
+    )
+}
 

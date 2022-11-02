@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react"
-import { getAllUserProfiles } from "../../modules/userProfileManager";
+import { getCurrentUserProfile } from "../../modules/userProfileManager";
 import { UserProfile } from "./UserProfile";
-import { getCurrentUser } from "../../modules/authManager";
 
 export const UserProfileList = () => {
     const [users, setUsers] = useState([]);
 
     //set state upon rendering
+    // useEffect(() => {
+    //     getAllUserProfiles().then(setUsers);
+    // }, []
+    // );
+
     useEffect(() => {
-        getAllUserProfiles().then(setUsers);
-    }, []
-    );
+        getCurrentUserProfile()
+        .then((profileArray) => {
+            setUsers(profileArray)
+        })
+    }, [])
 
 
     return (
