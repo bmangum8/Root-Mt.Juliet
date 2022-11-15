@@ -17,9 +17,9 @@ Admin users can view all user requests and can mark requests as complete (edit r
 Users can see a list of native trees with pictures and descriptions. These are the actual trees that Root Nashville plants.
 
 ## Demo
-![Root Mt.Juliet App demo](https://github.com/bmangum8/Root-Mt.Juliet/issues/3#issue-1450316539)
 
-<img src="./RootMJ_Demo.mp4" alt="">
+
+<img src="./Demo_RootMJ.mp4" alt="">
 
 
 ## Technologies Used
