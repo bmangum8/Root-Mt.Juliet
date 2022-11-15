@@ -6,7 +6,7 @@ The non-profit group Root Nashville plants trees in Nashville neighborhoods, fre
 
 Root Mt. Juliet is an application that allows the user to create a request for a tree to be planted in their neighborhood.
 
-I built this application using React, C#, and Firebase. My goals were to create a full-stack web app and with different features based on the users authorization status in the backend. 
+I built this application using React, C#, and Firebase. My goals were to create a full-stack web app with different features based on the users authorization status in the backend. 
 
 ## Features
 
