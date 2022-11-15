@@ -19,7 +19,7 @@ Users can see a list of native trees with pictures and descriptions. These are t
 ## Demo
 
 
-<img src="./Demo_RootMJ.mp4" alt="">
+<video src="./Demo_RootMJ.mp4" alt="">
 
 
 ## Technologies Used
