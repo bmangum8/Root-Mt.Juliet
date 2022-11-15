@@ -19,6 +19,8 @@ Users can see a list of native trees with pictures and descriptions. These are t
 ## Demo
 ![Root Mt.Juliet App demo](https://github.com/bmangum8/Root-Mt.Juliet/issues/3#issue-1450316539)
 
+<img src="./RootMJ_Demo.mp4" alt="">
+
 
 ## Technologies Used
 
