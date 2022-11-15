@@ -27,7 +27,7 @@ C#, SQL, javascript, react, reactstrap, postman, git, github, vscode, visual stu
 
 
 ## ERD
-![erd](https://user-images.githubusercontent.com/103229067/182932285-140fbd3b-5e27-4522-bdde-fd315c9901cd.png)
+<img src="./RootMJ_ERD.png" alt="">
 
 
 ## Created by Brittany Mangum
